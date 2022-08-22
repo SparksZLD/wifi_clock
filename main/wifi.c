@@ -20,6 +20,7 @@
 #include "nvs_flash.h"
 #include "esp_netif.h"
 #include "esp_smartconfig.h"
+#include "led.h"
 
 
 /* FreeRTOS event group to signal when we are connected & ready to make a request */
@@ -31,6 +32,8 @@ static EventGroupHandle_t s_wifi_event_group;
 static const int CONNECTED_BIT = BIT0;
 static const int ESPTOUCH_DONE_BIT = BIT1;
 static const char *TAG = "smartconfig_example";
+
+static TaskHandle_t *pvSmartconfigTask = NULL; //配网任务句柄
 
 static void smartconfig_example_task(void * parm);
 
@@ -57,16 +60,8 @@ static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_
 {
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START)
     {
-#if 0
-        wifi_config_t wifi_nvs_config;
-
-        /* 初始化(清0) wifi_nvs_config 变量 */
-        bzero(&wifi_nvs_config, sizeof(wifi_nvs_config));
-
-        /* 获取nvs中储存的WiFi信息 */
-        esp_wifi_get_config(WIFI_IF_STA, &wifi_nvs_config);
-#endif
         /* 连接wifi */
+        wifi_station_config();
         esp_wifi_connect();
         ESP_LOGI(TAG, "wifi start");
     } 
@@ -225,7 +220,7 @@ static void initialise_wifi(void)
         },
     };
     #else
-    wifi_station_config();
+    //wifi_station_config();
     #endif
 
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA) );
@@ -253,7 +248,9 @@ static void smartconfig_example_task(void * parm)
         if(uxBits & CONNECTED_BIT) 
         {
             ESP_LOGI(TAG, "WiFi Connected to ap");
+
             //添加 wifi 连接成功后处理函数
+            led_set(LED_OFF);
         }
 
         if(uxBits & ESPTOUCH_DONE_BIT) 
@@ -264,9 +261,11 @@ static void smartconfig_example_task(void * parm)
             /* 将配置信息保存再nvs flash中 */
             ESP_LOGI(TAG, "storage wifi congfig to nvs flash");
             esp_wifi_set_storage(WIFI_STORAGE_FLASH);   
-            
+
             /* 删除本线程 */
             vTaskDelete(NULL);
+
+            pvSmartconfigTask = NULL;
         }
     }
 }
@@ -280,8 +279,31 @@ void wifi_init(void)
 
 void wifi_smartconfig_start(void)
 {
-    xTaskCreate(smartconfig_example_task, "smartconfig_example_task", 4096, NULL, 3, NULL);
-    ESP_LOGI(TAG, "start smartconfig");
+    // xTaskCreate(smartconfig_example_task, "smartconfig_example_task", 4096, NULL, 3, NULL);
+    if(pvSmartconfigTask == NULL)
+    {
+        xTaskCreate(smartconfig_example_task, "smartconfig_example_task", 4096, NULL, 3, pvSmartconfigTask);
+        ESP_LOGI(TAG, "start smartconfig");
+        led_set(LED_ON);
+    }
+}
+
+void wifi_smartconfig_stop(void)
+{
+    if(pvSmartconfigTask != NULL)
+    {
+        //删除线程
+        vTaskDelete(pvSmartconfigTask);
+
+        esp_smartconfig_stop();
+
+        //重新连接wifi
+        wifi_station_config();
+        esp_wifi_connect();
+
+        led_set(LED_OFF);
+        pvSmartconfigTask = NULL;
+    }
 }
 
 
