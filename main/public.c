@@ -6,7 +6,7 @@
  * @param month
  * @param day
  * @return return value: 0      1      2      3     4       5     6 
- *                 week: 一     二     三     四     五     六     七
+ *                 week: 一     二     三     四     五     六     日
  * @note 蔡勒公式: https://baike.baidu.com/item/%E8%94%A1%E5%8B%92%E5%85%AC%E5%BC%8F/10491767
  */
 int get_Week(int y, int m, int d)

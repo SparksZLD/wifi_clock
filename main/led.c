@@ -10,6 +10,11 @@
 
 static const char *TAG = "LED_DEBUG";
 
+/**
+ * @brief LED 初始化
+ * @param none
+ * @return none
+ */
 void led_init(void)
 {
     gpio_reset_pin(PIN_NUM_LED);
@@ -18,8 +23,12 @@ void led_init(void)
     ESP_LOGI(TAG, "LED gpio init finished...");
 }
 
-
-void led_set(LED_STATE_t x)
+/**
+ * @brief LED 控制
+ * @param x - 详情请查看 Led_State_e
+ * @return none
+ */
+void led_set(Led_State_e x)
 {
     if(x == LED_ON)
         gpio_set_level(PIN_NUM_LED, 1);

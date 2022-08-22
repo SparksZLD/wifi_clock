@@ -55,7 +55,10 @@ static void wifi_station_config(void)
     ESP_ERROR_CHECK( esp_wifi_set_config(WIFI_IF_STA, &wifi_config) );
 }
 
-
+/**
+ * @brief 
+ * 
+ */
 static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data)
 {
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START)
@@ -155,40 +158,15 @@ static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_
     }
 }
 
+/**
+ * @brief wifi 站点模式初始化
+ * @param none
+ * @return none
+ */
 static void initialise_wifi(void)
 {
-#if 0
-    //smart config
-    /* 初始化底层TCP/IP堆栈 */
-    ESP_ERROR_CHECK(esp_netif_init());
-
-    /* 创建一个事件组 smartconfig 事件组 */
-    s_wifi_event_group = xEventGroupCreate();
-
-    /* wifi事件 */
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
-    esp_netif_t *sta_netif = esp_netif_create_default_wifi_sta();
-    assert(sta_netif);
-
-    /* wifi初始化 */
-    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-    ESP_ERROR_CHECK( esp_wifi_init(&cfg) );
-
-    /* 注册事件 */
-    ESP_ERROR_CHECK( esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL) ); //将事件类型：WIFI_EVENT 中  ESP_EVENT_ANY_ID(全部事件)   注册到 event_handler 函数
-    ESP_ERROR_CHECK( esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &event_handler, NULL) );//将事件类型：IP_EVENT 中 IP_EVENT_STA_GOT_IP(获取IP事件) 注册到 event_handler 函数
-    ESP_ERROR_CHECK( esp_event_handler_register(SC_EVENT, ESP_EVENT_ANY_ID, &event_handler, NULL) );   //将事件类型：SC_EVENT 中 ESP_EVENT_ANY_ID(全部事件) 注册到 event_handler 函数
-
-    /* 设置模式 */
-    ESP_ERROR_CHECK( esp_wifi_set_mode(WIFI_MODE_STA) );
-
-    /* 启动Wifi */
-    ESP_ERROR_CHECK( esp_wifi_start() );
-
-    esp_wifi_set_storage(WIFI_STORAGE_FLASH);
-#else
     //station config
-     /* 初始化底层TCP/IP堆栈 */
+    /* 初始化底层TCP/IP堆栈 */
     ESP_ERROR_CHECK(esp_netif_init());
 
     /* 创建一个事件组 smartconfig 事件组 */
@@ -228,10 +206,14 @@ static void initialise_wifi(void)
     ESP_ERROR_CHECK(esp_wifi_start() );
 
     ESP_LOGI(TAG, "wifi_init_sta finished.");
-#endif
-
 }
 
+
+/**
+ * @brief smart config 任务
+ * @param parm - 固定写法, void *parm, 任意参数指针
+ * @return none
+ */
 static void smartconfig_example_task(void * parm)
 {
     EventBits_t uxBits;
@@ -270,6 +252,11 @@ static void smartconfig_example_task(void * parm)
     }
 }
 
+/**
+ * @brief wifi 设备初始化
+ * @param none
+ * @return none
+ */
 void wifi_init(void)
 {
     ESP_ERROR_CHECK( nvs_flash_init() );
@@ -277,6 +264,11 @@ void wifi_init(void)
 }
 
 
+/**
+ * @brief 启动 smart config 
+ * @param none
+ * @return none
+ */
 void wifi_smartconfig_start(void)
 {
     // xTaskCreate(smartconfig_example_task, "smartconfig_example_task", 4096, NULL, 3, NULL);
@@ -288,6 +280,12 @@ void wifi_smartconfig_start(void)
     }
 }
 
+
+/**
+ * @brief 关闭 smart config
+ * @param none
+ * @param none
+ */
 void wifi_smartconfig_stop(void)
 {
     if(pvSmartconfigTask != NULL)

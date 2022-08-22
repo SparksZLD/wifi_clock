@@ -35,7 +35,7 @@ typedef enum
     LCD_ICON_INDEX_END,  //Ω· ¯±Í÷æ
 }Lcd_Icon_Index_e;
 
-extern typFNT_GB2312_t Chinese_Gbk[];
-extern unsigned char ascii_3216[];
-extern unsigned char ascii_1608[];
-extern unsigned char weather_icon_tab[][ICON_WIDTH/8*ICON_HEIGHT];
+extern const typFNT_GB2312_t Chinese_Gbk[];
+extern const unsigned char ascii_3216[];
+extern const unsigned char ascii_1608[];
+extern const unsigned char weather_icon_tab[][ICON_WIDTH/8*ICON_HEIGHT];

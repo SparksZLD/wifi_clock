@@ -1159,7 +1159,7 @@ Lcd_Diplay_State_e hal_lcd_show_weather_icon(uint16_t x, uint16_t y,  uint16_t w
  * @param main_page_num - 哪一页是主页面(当前正在显示的画面), 该参数只能是0 或者 1, 
  * @return none
  */
-void hal_lcd_main_page_slide(Date_t date, Weather_Code_e weather_code, uint16_t temperature, uint8_t main_page_num)
+void hal_lcd_main_page_slide(Date_t date, Weather_Code_e weather_code, int temperature, uint8_t main_page_num)
 {
     uint16_t slide_width, slide_height;   //幻灯片区域大小
     uint16_t x, y; //幻灯片区域起始地址
@@ -1297,22 +1297,22 @@ void hal_lcd_main_page_slide(Date_t date, Weather_Code_e weather_code, uint16_t 
     Lcd_Slide_Config.src_back_color = COLOR_BLUE;
     if(main_page_num == 0)
     {
-        Lcd_Slide_Config.src_buf = (uint8_t *)page0_buf[0];
+        Lcd_Slide_Config.src_buf = (uint8_t *)&page0_buf[0];
     }
     else
     {
-        Lcd_Slide_Config.src_buf = (uint8_t *)page1_buf[0];
+        Lcd_Slide_Config.src_buf = (uint8_t *)&page1_buf[0];
     }
     
     Lcd_Slide_Config.dest_color = COLOR_WHITE;
     Lcd_Slide_Config.dest_back_color = COLOR_BLUE;
     if(main_page_num == 0)
     {
-        Lcd_Slide_Config.dest_buf = (uint8_t *)page1_buf[0];
+        Lcd_Slide_Config.dest_buf = (uint8_t *)&page1_buf[0];
     }
     else
     {
-        Lcd_Slide_Config.dest_buf = (uint8_t *)page0_buf[0];
+        Lcd_Slide_Config.dest_buf = (uint8_t *)&page0_buf[0];
     }
 
     //一帧多少秒 和 一帧移动多少像素点
@@ -1383,7 +1383,7 @@ void hal_lcd_test(void)
     printf("%d\n", hal_lcd_slide_show(Lcd_Slide_Config));
 #endif
 
-#if 0
+#if 1
     //测试主界面幻灯片
     Date_t date = {
         .year = 2022,

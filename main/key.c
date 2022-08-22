@@ -110,12 +110,15 @@ void key_event_handle(void *pvParameters)
         {
             //添加按键短按处理函数
             ESP_LOGI(TAG, "key short press handle...");
-            wifi_smartconfig_start();
+            wifi_smartconfig_stop();
         }
         else if((KEY_LONG_PRESS_EVENT & r_event) == KEY_LONG_PRESS_EVENT)
         {
             //添加按键长按处理函数
             ESP_LOGI(TAG, "key long press handle...");
+            wifi_smartconfig_start();
+
+            wifi_smartconfig_start();
         }
     }
 }
