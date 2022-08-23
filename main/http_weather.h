@@ -91,4 +91,8 @@ typedef struct _beijing_time
 }cjson_date_info_t;
 
 
+
+int http_get_date_info(void);
+int http_get_weather_info(void);
+
 void http_weater_test(void);

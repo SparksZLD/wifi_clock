@@ -91,9 +91,9 @@ DRAM_ATTR static const lcd_init_cmd_t st_init_cmds[]={
     /* Negative Voltage Gamma Control */
     {0xE1, {0xD0, 0x04, 0x0C, 0x11, 0x13, 0x2C, 0x3F, 0x44, 0x51, 0x2F, 0x1F, 0x1F, 0x20, 0x23}, 14},
     /* This command is used to enter into display inversion mode */
-    {0x21, {0}, 0x80}, //颜色反转
+    {0x21, {0}, 0x80}, //颜色正常显示
     /* This command is used to recover from display inversion mode */
-    //{0x20, {0}, 0x80}, //颜色正常显示
+    //{0x20, {0}, 0x80}, //颜色反转
     /* Sleep Out */
     {0x11, {0}, 0x80},
     /* Display On */

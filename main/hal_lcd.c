@@ -928,7 +928,9 @@ Lcd_Diplay_State_e hal_lcd_slide_show(Lcd_Slide_Config_t Lcd_Slide_Config)
                         }
 
                         //刷新一行跳过一行
-                        hal_lcd_fill_picture_jump(start_x, start_y, width, height, src_color, src_back, buf + buf_offset);                 
+                        hal_lcd_fill_picture_jump(start_x, start_y, width, height, src_color, src_back, buf + buf_offset);
+
+                        vTaskDelay( Lcd_Slide_Config.speed_ms / portTICK_PERIOD_MS );     
                     }
                 }
                 else
@@ -956,6 +958,8 @@ Lcd_Diplay_State_e hal_lcd_slide_show(Lcd_Slide_Config_t Lcd_Slide_Config)
                         
                         //刷新一行跳过一行
                         hal_lcd_fill_picture_jump(start_x, start_y, width, height, src_color, src_back, buf + buf_offset);
+
+                        vTaskDelay( Lcd_Slide_Config.speed_ms / portTICK_PERIOD_MS );   
                     }
                 }
                 else

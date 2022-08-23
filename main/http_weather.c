@@ -518,7 +518,8 @@ int http_get_weather_info(void)
 
     char url[200] = "https://api.seniverse.com/v3/weather/now.json?key=";
 
-    http_response_state = http_get_json( (char *)REGION_HRTTPS_LINK );
+    //获取城市信息
+    http_response_state = http_get_json( (char *)REGION_HRTTPS_LINK ); 
     if(http_response_state != 0)
     {
         result = -1;
@@ -540,6 +541,7 @@ int http_get_weather_info(void)
             http_response_state  = http_get_json( url );
             if(http_response_state != -1)
             {
+                //获取天气信息
                 json_analysis_ret = weather_cjson_to_struct_info(http_response_body, &cjson_weather_info);
                 if(json_analysis_ret != -1)
                 {

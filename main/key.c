@@ -103,7 +103,7 @@ void key_event_handle(void *pvParameters)
         r_event = xEventGroupWaitBits(Event_Handler,                         //事件的句柄
                             KEY_SHOET_PRESS_EVENT | KEY_LONG_PRESS_EVENT,    //感兴趣的事件
                             pdTRUE,                                          //退出时是否清除事件位
-                            pdFALSE,                                          //是否满足所有事件
+                            pdFALSE,                                         //是否满足所有事件
                             portMAX_DELAY);                                  //超时时间，一直等所有事件都满足
 
         if((KEY_SHOET_PRESS_EVENT & r_event) == KEY_SHOET_PRESS_EVENT)
