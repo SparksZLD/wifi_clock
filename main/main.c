@@ -101,7 +101,6 @@ void app_get_http_data(void *pvParameters)
         if(r_event != WIFI_INIT_FINISH_EVENT)
         {
             vTaskDelete(NULL);
-            return;
         }
 
         for (int i = 0; i < 5; i++)
@@ -126,7 +125,6 @@ void app_get_http_data(void *pvParameters)
             if( (http_get_date_info() ==  -1) ||  (http_get_weather_info() == -1) )
             {
                 vTaskDelete(NULL);
-                return;
             }
         }
 

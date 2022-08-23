@@ -45,7 +45,7 @@
 /***************************************** st7735 params define ****************************************************/
 static const char *TAG = "LCD_DEBUG";
 // RGB-565 16bit, 240*240;
-static uint8_t display_buff[LCD_WIDTH * LCD_HEIGHT * 2];
+//static uint8_t display_buff[LCD_WIDTH * LCD_HEIGHT * 2];
 
 #ifdef LCD_HARDWARE_SPI
 static spi_device_handle_t spi_dev;
@@ -375,6 +375,7 @@ void lcd_init(void)
 
 void lcd_clear(uint16_t color)
 {
+    uint8_t display_buff[LCD_WIDTH * LCD_HEIGHT * 2];
     for (int i = 0; i < (LCD_WIDTH * LCD_HEIGHT * 2); i = i + 2)
     {
         display_buff[i] = (uint8_t)(color >> 8);
